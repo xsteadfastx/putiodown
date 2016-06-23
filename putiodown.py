@@ -10,6 +10,15 @@ BASE_URL = 'https://api.put.io/v2/'
 
 
 def create_url(endpoint, token=None):
+    """Generates a url with a api endpoint and a token.
+
+    :param endpoint: a api endpoint
+    :param token: a authentication token
+    :type endpoint: str
+    :type token: str
+    :returns: url
+    :rtype: str
+    """
     url = urllib.parse.urljoin(BASE_URL, endpoint)
 
     if token:
@@ -21,6 +30,19 @@ def create_url(endpoint, token=None):
 
 
 def read_token():
+    """Reads and returns the authentication token.
+
+    It tries to read the token from a already existing config file first.
+    If there is no token it will get one from the putio api and store it
+    in a config file.
+
+    Location of the config file::
+
+        ~/.putiodown
+
+    :returns: putio authentication token
+    :rtype: str
+    """
     home = os.path.expanduser('~')
     config_file = os.path.join(home, '.putiodown')
     config = configparser.ConfigParser()
