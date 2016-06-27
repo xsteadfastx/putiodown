@@ -1,12 +1,25 @@
 import configparser
+import logging
 import os
 import requests
-import webbrowser
+import sys
 import urllib.parse
+import webbrowser
 
 
 CLIENT_ID = '2473'
 BASE_URL = 'https://api.put.io/v2/'
+
+
+# logging
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler(stream=sys.stdout)
+ch.setLevel(logging.INFO)
+fh = logging.FileHandler('putiodown.log')
+fh.setLevel(logging.DEBUG)
+logger.addHandler(ch)
+logger.addHandler(fh)
 
 
 def create_url(endpoint, token=None):
@@ -205,6 +218,12 @@ def download_list(token):
                 }
 
 
+def download():
+    pass
+
+
 token = read_token()
 for i in download_list(token):
-    print(i)
+    url = create_url('files/{}/download'.format(i['id']), token=token)
+    logger.info('getting {}'.format(url))
+    r = requests.get(url)
